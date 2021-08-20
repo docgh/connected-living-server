@@ -1,0 +1,26 @@
+.navtable td {
+    width: 50px;
+    height: 50px;
+    text-align: center;
+}
+
+.navtable {
+    margin: 0 auto;
+}
+
+.navigate {
+    width: 230;
+    padding: 20px;
+    text-align: center;
+}
+
+.navtable a:link {
+    text-decoration: none;
+}  
+.navtable a:visited {
+    text-decoration: none;
+}
+
+.robotSelector {
+    margin-left:10px;
+}
