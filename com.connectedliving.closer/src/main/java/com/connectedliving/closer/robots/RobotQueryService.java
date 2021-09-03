@@ -1,26 +1,74 @@
 package com.connectedliving.closer.robots;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
+import javax.servlet.http.HttpServletRequest;
+
 public abstract class RobotQueryService {
 
 	protected Object waitObject;
 	protected String command;
-	private boolean used;
+	protected String arguments;
+	protected boolean used;
+	private Timer t;
+	protected int TIMEOUT = 30 * 60 * 1000; // 30 minutes
 
 	public RobotQueryService() {
 		waitObject = new Object();
+		t = new Timer();
 		command = "";
+		arguments = "";
 		used = false;
 	}
 
-	public boolean hasBeenUsed() {
+	/**
+	 * If request has been used and completed
+	 * 
+	 * @return
+	 */
+	public boolean hasBeenUsed(HttpServletRequest request) {
 		return used;
 	}
 
-	public void perform(String command) {
+	/**
+	 * Perform the command
+	 * 
+	 * @param command
+	 */
+	public void perform(String command, String arguments) {
 		this.command = command;
+		this.arguments = arguments;
 		used = true;
 		synchronized (waitObject) {
 			waitObject.notify();
+			t.cancel(); // void the timeout
+		}
+	}
+
+	/**
+	 * Set a timeout where connection will be closed
+	 */
+	protected void setTimeout() {
+		Timeout timeout = new Timeout();
+		t.schedule(timeout, TIMEOUT);
+	}
+
+	protected void clearTimeout() {
+		t.cancel();
+	}
+
+	/**
+	 * Simple timer class
+	 * 
+	 * @author Greg Hill <ghill@connectedliving.com>
+	 *
+	 */
+	class Timeout extends TimerTask {
+
+		@Override
+		public void run() {
+			perform("refresh", "");
 		}
 	}
 

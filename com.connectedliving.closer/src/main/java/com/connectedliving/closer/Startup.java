@@ -6,18 +6,18 @@ import com.connectedliving.closer.network.CLServer;
 import com.connectedliving.closer.network.firebase.FirebaseService;
 import com.connectedliving.closer.robots.Registry;
 import com.connectedliving.closer.robots.Robot;
-import com.connectedliving.closer.robots.testRobot.TestRobotService;
+import com.connectedliving.closer.robots.temi.TemiRobotService;
 
 public class Startup {
 
-	static final String testToken = "fYY0aKQ2SpGWuIRLAk-Zrw:APA91bF8Xhxa6nDMYWvMFr37sTMALoJ2DEzRiGlHCPILggx51s-wJHOSHZqi5ZQ2825RKgS4oAUNKI7ktcC6f_SRmxnUu-wqYGBcbyugfXMk0PKDO4crvXDlqgZJjoWeJ84RgrbuYv0d";
+	static final String testToken = "cnS1eKDITNCiol4vxlQdXS:APA91bE9BgxHrdoCJLHTCQXn9AWJ9--U2Z29xg86Ck637W68nAsVwK60jObI2vK-g4LBYr-IkqOe0yLi-NHRIZnMhiJekXm5zmcFEyC0MqkAUFWqSuH4nza13RPmPGZ2wJY_xXZfOWSO";
 
 	public static void main(String[] args) {
 		try {
 			BasicConfigurator.configure();
 			Services services = Services.getInstance();
 			services.setRegistry(new Registry());
-			services.registerRobotService(new TestRobotService());
+			services.registerRobotService(new TemiRobotService());
 			services.setFirebaseService(new FirebaseService());
 			new CLServer().start();
 

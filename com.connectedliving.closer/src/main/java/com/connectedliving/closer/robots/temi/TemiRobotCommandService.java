@@ -1,4 +1,4 @@
-package com.connectedliving.closer.robots.testRobot;
+package com.connectedliving.closer.robots.temi;
 
 import java.io.IOException;
 import java.util.stream.Collectors;
@@ -13,7 +13,7 @@ import com.connectedliving.closer.network.firebase.FirebaseService;
 import com.connectedliving.closer.robots.Robot;
 import com.connectedliving.closer.robots.RobotQueryService;
 
-public class TestRobotCommandService {
+public class TemiRobotCommandService {
 
 	public void handle(HttpServletRequest request, HttpServletResponse response) {
 		System.out.println("Command received");
@@ -24,22 +24,26 @@ public class TestRobotCommandService {
 				JSONObject json = new JSONObject(data);
 				String robotName = json.getString("robot");
 				String command = json.getString("command");
-				Robot robot = services.getRegistry().getRobot("F", robotName);
+				String facility = json.getString("facility");
+				String arguments = json.has("arguments") ? json.getJSONArray("arguments").toString() : "";
+				Robot robot = services.getRegistry().getRobot(facility, robotName);
 				if (robot == null) {
 					// Not registered
 				} else {
 					RobotQueryService handler = robot.getHandler();
-					if (handler == null || handler.hasBeenUsed()) {
+					if (handler == null || handler.hasBeenUsed(request)) {
 						FirebaseService fb = services.getFireBase();
 						if (fb != null) {
+							System.out.println("Firebase");
 							if (fb.sendMessage(json.toString(), robot.getToken())) {
-								// OK
+
 							} else {
 								// Fail
 							}
+
 						}
 					} else {
-						handler.perform(command);
+						handler.perform(command, arguments);
 					}
 				}
 

@@ -13,33 +13,47 @@
         <label >Camera</label>
         <table class="navtable">
             <tr>
+            	<td>
+                </td>
                 <td>
                 </td>
                 <td>
                     <a href="#" onclick="up()">
-                     <i class="fa fa-chevron-up fa-2x"></i>
+                     <i class="fa fa-angle-up fa-2x"></i>
                     </a>
+                </td>
+                <td>
                 </td>
                 <td>
                 </td>
             </tr>
             <tr>
+            	<td>
+            	<a href="#" onclick="left(10)">
+                        <i class="fa fa-angle-double-left fa-2x"></i>
+                    </a>
+                </td>
                 <td>
-                    <a href="#" onclick="left()">
-                        <i class="fa fa-chevron-left fa-2x"></i>
+                    <a href="#" onclick="left(5)">
+                        <i class="fa fa-angle-left fa-2x"></i>
                     </a>
                     
                 </td>
                 <td>
                 </td>
                 <td>
-                    <a href="#" onclick="right()">
-                        <i class="fa fa-chevron-right fa-2x"></i>
+                	<a href="#" onclick="right(5)">
+                        <i class="fa fa-angle-right fa-2x"></i>
                     </a>
-                    
+                <td>
+                    <a href="#" onclick="right(10)">
+                        <i class="fa fa-angle-double-right fa-2x"></i>
+                    </a>   
                 </td>
             </tr>
             <tr>
+            	<td>
+                </td>
                 <td>
                 </td>
                 <td>
@@ -50,6 +64,8 @@
                 </td>
                 <td>
                 </td>
+                <td>
+                </td>
             </tr>
         </table>
     </div>
@@ -57,9 +73,14 @@
         <label for="robot">Select robot for facility "Test"</label>
         <select name="robot" id="robot" onchange="changeSelection()">
         	<option value="0">Select</option>
-            <option value="1">Robot 1</option>
+            <option value="docgreg temi">Robot 1</option>
             <option value="2">Robot 2</option>
             <option value="3">Robot 3</option>
           </select>
+    </div>
+    <div>
+    <button id="pictureButton" onclick="picture()">Picture</button>
+    <br>
+    <img id="picture" src="#">
     </div>
 </body>

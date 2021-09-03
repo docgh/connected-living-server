@@ -12,7 +12,7 @@ import com.connectedliving.closer.robots.RobotService;
 
 public class RegistryHandler extends HttpServlet {
 
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+	protected void doPut(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		List<RobotService> services = Services.getInstance().getRobotServices();
 		for (RobotService service : services) {
 			if (service.handlesRegistration(request)) {

@@ -1,5 +1,7 @@
 package com.connectedliving.closer.network;
 
+import javax.servlet.MultipartConfigElement;
+
 import org.eclipse.jetty.server.Connector;
 import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.Server;
@@ -7,7 +9,9 @@ import org.eclipse.jetty.server.ServerConnector;
 import org.eclipse.jetty.server.handler.ContextHandler;
 import org.eclipse.jetty.server.handler.HandlerCollection;
 import org.eclipse.jetty.server.handler.ResourceHandler;
-import org.eclipse.jetty.servlet.ServletHandler;
+import org.eclipse.jetty.server.session.SessionHandler;
+import org.eclipse.jetty.servlet.ServletContextHandler;
+import org.eclipse.jetty.servlet.ServletHolder;
 import org.eclipse.jetty.util.log.Log;
 import org.eclipse.jetty.util.log.StdErrLog;
 
@@ -23,11 +27,29 @@ public class CLServer {
 		ServerConnector connector = new ServerConnector(server);
 		connector.setPort(8080);
 		server.setConnectors(new Connector[] { connector });
-		ServletHandler handler = new ServletHandler();
 
-		handler.addServletWithMapping(RegistryHandler.class, "/register");
-		handler.addServletWithMapping(QueryHandler.class, "/query");
-		handler.addServletWithMapping(CommandHandler.class, "/command");
+		ServletContextHandler root = new ServletContextHandler(ServletContextHandler.SESSIONS);
+		root.setContextPath("/");
+		root.setCompactPath(true);
+		server.setHandler(root);
+
+		SessionHandler manager = new SessionHandler();
+		manager.setSessionCookie("JSESSIONID");
+		manager.setHttpOnly(true);
+		root.setSessionHandler(manager);
+
+		ServletHolder registerServlet = new ServletHolder(new RegistryHandler());
+		root.addServlet(registerServlet, "/register/*");
+
+		ServletHolder queryServlet = new ServletHolder(new QueryHandler());
+		root.addServlet(queryServlet, "/query/*");
+
+		ServletHolder commandServlet = new ServletHolder(new CommandHandler());
+		root.addServlet(commandServlet, "/command/*");
+
+		ServletHolder pictureServlet = new ServletHolder(new PictureHandler());
+		pictureServlet.getRegistration().setMultipartConfig(new MultipartConfigElement("./tmp"));
+		root.addServlet(pictureServlet, "/picture/*");
 
 		ResourceHandler webPages = new ResourceHandler();
 		webPages.setResourceBase("./src/main/resources/html");
@@ -37,7 +59,7 @@ public class CLServer {
 		webContext.setHandler(webPages);
 
 		HandlerCollection handlers = new HandlerCollection();
-		handlers.setHandlers(new Handler[] { webContext, handler });
+		handlers.setHandlers(new Handler[] { webContext, root });
 		server.setHandler(handlers);
 		server.start();
 	}

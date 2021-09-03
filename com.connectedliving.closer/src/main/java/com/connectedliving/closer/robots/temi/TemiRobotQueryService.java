@@ -1,4 +1,4 @@
-package com.connectedliving.closer.robots.testRobot;
+package com.connectedliving.closer.robots.temi;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -6,7 +6,9 @@ import java.util.Date;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
+import org.eclipse.jetty.server.Request;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -14,32 +16,41 @@ import com.connectedliving.closer.Services;
 import com.connectedliving.closer.robots.Robot;
 import com.connectedliving.closer.robots.RobotQueryService;
 
-public class TestRobotQueryService extends RobotQueryService {
+public class TemiRobotQueryService extends RobotQueryService {
 
-	public TestRobotQueryService() {
+	HttpSession session = null;
+
+	public TemiRobotQueryService() {
 		super();
+		setTimeout();
 	}
 
 	JSONObject testJson() {
 		JSONObject json = new JSONObject();
 		json.put("command", command);
-		JSONArray array = new JSONArray();
-		array.put(1);
-		array.put(2);
-		json.put("arguments", array);
+		json.put("arguments", new JSONArray(arguments));
 		return json;
 	}
 
-	public void handleQuery(HttpServletRequest request, HttpServletResponse response) {
+	@Override
+	public boolean hasBeenUsed(HttpServletRequest request) {
+		if (((Request) request).getSessionHandler().getSession(session.getId()) == null)
+			return false;
+		return used;
+	}
+
+	public void handleQuery(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		System.out.print(new Date().toLocaleString() + ": ");
 		System.out.println("Recieved query");
-		if (request.getHeader("Server") != null) {
-			System.out.println(request.getHeader("Server"));
+		if (request.getHeader("Cookie") != null) {
+			System.out.println(request.getHeader("Cookie"));
 		}
+		session = request.getSession(true);
 		String robotName = request.getParameter("robot");
-		Robot robot = Services.getInstance().getRegistry().getRobot("F", robotName);
+		String facility = request.getParameter("facility");
+		Robot robot = Services.getInstance().getRegistry().getRobot(facility, robotName);
 		if (robot == null) {
-			// Throw robot not found
+			throw new Exception("Robot not found");
 		}
 		robot.setHandler(this);
 		try {
@@ -55,11 +66,13 @@ public class TestRobotQueryService extends RobotQueryService {
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
+					session.invalidate();
 				} finally {
 					if (writer != null) {
 						writer.close();
 					}
 					robot.setHandler(null);
+					clearTimeout();
 				}
 			}
 

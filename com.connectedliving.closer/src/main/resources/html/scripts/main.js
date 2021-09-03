@@ -1,9 +1,13 @@
 
-function sendRequest(command) {
+var facility = "greg's home";
+
+function sendRequest(command, ...args) {
     const data = {
         command: command,
+        arguments: args ? args : [],
         auth: 'testAuth',
-        robot: $('#robot').val()
+        robot: $('#robot').val(),
+        facility: facility
     };
     $.ajax({
         url: 'http://localhost:8080/command',
@@ -24,17 +28,23 @@ function changeSelection() {
  }
 
 function up() {
-    sendRequest('camera_up');
+    sendRequest('camera_up', 10);
 }
 
 function down() {
-    sendRequest('camera_down');
+    sendRequest('camera_down', 10);
 }
 
-function left() {
-    sendRequest('camera_left');
+function left(arg) {
+    sendRequest('camera_left', arg);
 }
 
-function right() {
-    sendRequest('camera_right');
+function right(arg) {
+    sendRequest('camera_right', arg);
+}
+
+function picture() {
+	sendRequest('camera_picture');
+	var url = 'http://localhost:8080/picture?facility=' + facility + '&robot=' + $('#robot').val();
+	$('#picture').attr('src', encodeURI(url));
 }
