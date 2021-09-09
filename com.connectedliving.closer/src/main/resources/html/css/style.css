@@ -1,16 +1,36 @@
-.navtable td {
+.camtable td {
     width: 50px;
     height: 50px;
     text-align: center;
 }
 
-.navtable {
+.camtable {
     margin: 0 auto;
 }
 
-.navigate {
-    width: 230;
+.camera {
+    width: 230px;
     padding: 20px;
+    text-align: center;
+}
+
+.camtable a:link {
+    text-decoration: none;
+}  
+.camtable a:visited {
+    text-decoration: none;
+}
+
+.navtable {
+	width: 100px;
+	padding: 20px;
+    text-align: center;
+}
+
+.navtable td {
+	padding: 20px;
+    width: 50px;
+    height: 50px;
     text-align: center;
 }
 
@@ -21,6 +41,30 @@
     text-decoration: none;
 }
 
+
 .robotSelector {
     margin-left:10px;
 }
+
+.picbutton {
+	margin: 10px;
+	
+}
+.pictureDiv {
+	margin-top: 20px;
+}
+
+.LocationSelector {
+	padding: 10px;
+	display:none;
+}
+
+.LocationSelector button {
+	margin-left: 10px;
+}
+
+.BatteryDiv {
+	padding: 10px;
+	display: none;
+}
+

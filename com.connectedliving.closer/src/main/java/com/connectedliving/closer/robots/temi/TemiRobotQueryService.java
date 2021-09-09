@@ -10,6 +10,7 @@ import javax.servlet.http.HttpSession;
 
 import org.eclipse.jetty.server.Request;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.connectedliving.closer.Services;
@@ -25,10 +26,16 @@ public class TemiRobotQueryService extends RobotQueryService {
 		setTimeout();
 	}
 
-	JSONObject testJson() {
+	JSONObject createJson() {
 		JSONObject json = new JSONObject();
 		json.put("command", command);
-		json.put("arguments", new JSONArray(arguments));
+		if (arguments != null && !arguments.isEmpty()) {
+			try {
+				json.put("arguments", new JSONArray(arguments));
+			} catch (JSONException ex) {
+				System.out.println(arguments);
+			}
+		}
 		return json;
 	}
 
@@ -61,7 +68,7 @@ public class TemiRobotQueryService extends RobotQueryService {
 				PrintWriter writer = null;
 				try {
 					writer = response.getWriter();
-					writer.println(testJson().toString());
+					writer.println(createJson().toString());
 					response.flushBuffer();
 				} catch (IOException e) {
 					// TODO Auto-generated catch block

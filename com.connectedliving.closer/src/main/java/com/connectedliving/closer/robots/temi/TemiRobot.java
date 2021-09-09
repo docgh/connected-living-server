@@ -20,9 +20,6 @@ public class TemiRobot extends Robot {
 		locations = new ArrayList<String>();
 		if (data == null)
 			return;
-		if (data.has("Battery")) {
-			battery = data.getString("Battery");
-		}
 		if (data.has("Locations")) {
 			JSONArray locArray = data.getJSONArray("Locations");
 			Iterator<String> it = locations.iterator();

@@ -22,7 +22,7 @@ public class Startup {
 			new CLServer().start();
 
 			// For testing
-			Robot testRobot = new Robot("F", "1", testToken);
+			Robot testRobot = new Robot("greg's home", "docgreg temi", testToken);
 			Services.getInstance().getRegistry().addRobot(testRobot);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block

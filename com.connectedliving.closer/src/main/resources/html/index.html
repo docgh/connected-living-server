@@ -9,9 +9,9 @@
     <div class="header">
         <img src="./images/CLRobotics.png" style="width:260px;">
     </div>
-    <div class="navigate">
+    <div class="camera">
         <label >Camera</label>
-        <table class="navtable">
+        <table class="camtable">
             <tr>
             	<td>
                 </td>
@@ -69,6 +69,37 @@
             </tr>
         </table>
     </div>
+    <div class="movement"> 
+    	<label >Nav</label>
+		<table class="navtable">
+			<tr>
+				<td></td>
+				<td><a href="#" onclick="forward()"> <i
+						class="fa fa-angle-up fa-2x"></i>
+				</a></td>
+				<td></td>
+			</tr>
+			<tr>
+				<td><a href="#" onclick="rotateLeft()"> <i
+						class="fa fa-angle-double-left fa-2x"></i>
+				</a></td>
+				<td><a href="#" onclick="stop()"> <i
+						class="fa fa-stop fa-2x"></i>
+				</a></td>
+				<td><a href="#" onclick="rotateRight()"> <i
+						class="fa fa-angle-double-right fa-2x"></i>
+				</a></td>
+			</tr>
+
+			<tr>
+				<td></td>
+				<td><a href="#" onclick="back()"> <i
+						class="fa fa-angle-down fa-2x"></i>
+				</a></td>
+				<td></td>
+			</tr>
+		</table>
+	</div>
     <div class="robotSelector">
         <label for="robot">Select robot for facility "Test"</label>
         <select name="robot" id="robot" onchange="changeSelection()">
@@ -78,9 +109,21 @@
             <option value="3">Robot 3</option>
           </select>
     </div>
+    <div class="locationSelector">
+        <label for="locations">Locations: </label>
+    	<select name="locations" id="locations" onchange="changeLocation()">
+    	</select>
+    	<button id="gotoButton" onclick="goto()">go</button>
+    </div>
+    <div class="BatteryDiv">
+        <label for="battery">Battery: </label>
+    	<progress id="battery" max="100"></progress>
+    </div>
     <div>
-    <button id="pictureButton" onclick="picture()">Picture</button>
+    <button id="pictureButton" class="picbutton" onclick="picture()">Picture</button>
     <br>
-    <img id="picture" src="#">
+    <div id="pictureDiv">
+    </div>
+    
     </div>
 </body>

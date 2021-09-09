@@ -10,9 +10,11 @@ import com.connectedliving.closer.robots.RobotService;
 public class TemiRobotService implements RobotService {
 
 	TemiRobotImageCache imageCache;
+	TemiRobotStatusCache statusCache;
 
 	public TemiRobotService() {
 		imageCache = new TemiRobotImageCache();
+		statusCache = new TemiRobotStatusCache();
 	}
 
 	public boolean handlesRegistration(HttpServletRequest request) {
@@ -32,6 +34,10 @@ public class TemiRobotService implements RobotService {
 	}
 
 	public boolean handlesPictureQuery(HttpServletRequest request) {
+		return true;
+	}
+
+	public boolean handlesStatus(HttpServletRequest request) {
 		return true;
 	}
 
@@ -57,7 +63,7 @@ public class TemiRobotService implements RobotService {
 	}
 
 	public void handleCommand(HttpServletRequest request, HttpServletResponse response) {
-		TemiRobotCommandService command = new TemiRobotCommandService();
+		TemiRobotCommandService command = new TemiRobotCommandService(statusCache);
 		command.handle(request, response);
 
 	}
@@ -76,6 +82,17 @@ public class TemiRobotService implements RobotService {
 		TemiRobotImageService imageService = new TemiRobotImageService(imageCache);
 		try {
 			imageService.handle(request, response);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}
+
+	public void handleStatus(HttpServletRequest request, HttpServletResponse response) {
+		TemiStatusService service = new TemiStatusService(statusCache);
+		try {
+			service.handle(request, response);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

@@ -47,6 +47,9 @@ public class CLServer {
 		ServletHolder commandServlet = new ServletHolder(new CommandHandler());
 		root.addServlet(commandServlet, "/command/*");
 
+		ServletHolder statusServlet = new ServletHolder(new StatusHandler());
+		root.addServlet(statusServlet, "/status/*");
+
 		ServletHolder pictureServlet = new ServletHolder(new PictureHandler());
 		pictureServlet.getRegistration().setMultipartConfig(new MultipartConfigElement("./tmp"));
 		root.addServlet(pictureServlet, "/picture/*");

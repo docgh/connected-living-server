@@ -9,10 +9,9 @@ function sendRequest(command, ...args) {
         robot: $('#robot').val(),
         facility: facility
     };
-    $.ajax({
+    return $.ajax({
         url: 'http://localhost:8080/command',
         type: 'PUT',
-        dataType: 'application/json',
         data: JSON.stringify(data),
         success: function (result) {
             console.log('sent');
@@ -23,8 +22,23 @@ function sendRequest(command, ...args) {
     });
 }
 
+function updateRobot() {
+	sendRequest('status').then(function (data) {
+		if (data.Locations) {
+			data.Locations.forEach(function (loc) {
+			    $('#locations').append($('<option>').attr('value', loc).append(loc));
+			});
+			$('.locationSelector').show();
+		}
+		if (data.Battery) {
+			$('#battery').val(data.Battery.level);
+			$('.BatteryDiv').show();
+		}
+	});
+}
+
 function changeSelection() {
- 	sendRequest('ping');
+ 	updateRobot();
  }
 
 function up() {
@@ -43,8 +57,33 @@ function right(arg) {
     sendRequest('camera_right', arg);
 }
 
+function forward(arg) {
+    sendRequest('move_forward', arg);
+}
+
+function stop(arg) {
+    sendRequest('move_stop', arg);
+}
+
+function back(arg) {
+    sendRequest('move_back', arg);
+}
+
+function rotateLeft(arg) {
+    sendRequest('rotate_left', arg);
+}
+
+function rotateRight(arg) {
+    sendRequest('rotate_right', arg);
+}
+
+function goto() {
+	sendRequest('goto_location', $('#locations').val());
+}
+
 function picture() {
 	sendRequest('camera_picture');
+	$('#pictureDiv').empty();
 	var url = 'http://localhost:8080/picture?facility=' + facility + '&robot=' + $('#robot').val();
-	$('#picture').attr('src', encodeURI(url));
+	$('#pictureDiv').append($('<img>').attr('src', encodeURI(url)));
 }
