@@ -14,6 +14,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.connectedliving.closer.Services;
+import com.connectedliving.closer.robots.Registry;
 import com.connectedliving.closer.robots.Robot;
 import com.connectedliving.closer.robots.RobotQueryService;
 
@@ -55,7 +56,7 @@ public class TemiRobotQueryService extends RobotQueryService {
 		session = request.getSession(true);
 		String robotName = request.getParameter("robot");
 		String facility = request.getParameter("facility");
-		Robot robot = Services.getInstance().getRegistry().getRobot(facility, robotName);
+		Robot robot = Services.getInstance().getService(Registry.class).getRobot(facility, robotName);
 		if (robot == null) {
 			throw new Exception("Robot not found");
 		}

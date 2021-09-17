@@ -2,13 +2,15 @@ package com.connectedliving.closer.robots;
 
 import java.util.Date;
 
-public class Robot {
+public abstract class Robot {
 
 	private String fireBaseToken;
 	private String robotName;
 	private String facility;
+	private String data;
 	private Date registrationTime;
 	private RobotQueryService handler;
+	private int robotType;
 
 	/**
 	 * Create a robot storage class
@@ -17,11 +19,29 @@ public class Robot {
 	 * @param robotName
 	 * @param token
 	 */
-	public Robot(String facility, String robotName, String token) {
+	public Robot(String facility, String robotName, String token, int robotType) {
 		this.facility = facility;
 		this.robotName = robotName;
 		this.registrationTime = new Date();
 		this.fireBaseToken = token;
+		this.data = null;
+		this.robotType = robotType;
+	}
+
+	/**
+	 * Create a robot storage class
+	 * 
+	 * @param facility
+	 * @param robotName
+	 * @param token
+	 */
+	public Robot(String facility, String robotName, String token, Long time, int robotType) {
+		this.facility = facility;
+		this.robotName = robotName;
+		this.registrationTime = new Date(time);
+		this.fireBaseToken = token;
+		this.data = null;
+		this.robotType = robotType;
 	}
 
 	/**
@@ -61,5 +81,18 @@ public class Robot {
 
 	public RobotQueryService getHandler() {
 		return handler;
+	}
+
+	// Should have override
+	public int getType() {
+		return 0;
+	}
+
+	public void setData(String data) {
+		this.data = data;
+	}
+
+	public String getData() {
+		return this.data;
 	}
 }

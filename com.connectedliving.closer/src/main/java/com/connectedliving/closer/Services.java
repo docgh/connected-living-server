@@ -2,21 +2,21 @@ package com.connectedliving.closer;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
-import com.connectedliving.closer.network.firebase.FirebaseService;
-import com.connectedliving.closer.robots.Registry;
 import com.connectedliving.closer.robots.RobotService;
 
 // DO WE WANT OSGI OR OTHER SERVICE REGISTRY????
 
 public class Services {
 
-	private Registry registry;
 	private ArrayList<RobotService> robotServices;
-	private FirebaseService firebase;
 	static Services instance;
+	private final ConcurrentMap<Class<?>, Object> services;
 
 	public Services() {
+		services = new ConcurrentHashMap<Class<?>, Object>();
 		this.robotServices = new ArrayList<RobotService>();
 	}
 
@@ -27,15 +27,17 @@ public class Services {
 		return instance;
 	}
 
-	public void setRegistry(Registry handler) {
-		this.registry = handler;
+	public <S> S getService(Class<? extends S> clazz) {
+		@SuppressWarnings("unchecked")
+		S service = (S) services.get(clazz);
+		if (null == service) {
+			throw new IllegalStateException("Missing service " + clazz.getName());
+		}
+		return service;
 	}
 
-	public Registry getRegistry() {
-		if (registry == null) {
-			// THROW NO SERVICE
-		}
-		return registry;
+	public <S> void add(Class<? extends S> clazz, S service) {
+		services.put(clazz, service);
 	}
 
 	public List getRobotServices() {
@@ -44,14 +46,6 @@ public class Services {
 
 	public void registerRobotService(RobotService service) {
 		robotServices.add(service);
-	}
-
-	public void setFirebaseService(FirebaseService firebase) {
-		this.firebase = firebase;
-	}
-
-	public FirebaseService getFireBase() {
-		return firebase;
 	}
 
 }

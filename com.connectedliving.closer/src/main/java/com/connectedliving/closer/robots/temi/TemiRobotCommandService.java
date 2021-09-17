@@ -11,6 +11,7 @@ import org.json.JSONObject;
 
 import com.connectedliving.closer.Services;
 import com.connectedliving.closer.network.firebase.FirebaseService;
+import com.connectedliving.closer.robots.Registry;
 import com.connectedliving.closer.robots.Robot;
 import com.connectedliving.closer.robots.RobotQueryService;
 
@@ -82,14 +83,14 @@ public class TemiRobotCommandService {
 		String command = json.getString("command");
 		String facility = json.getString("facility");
 		String arguments = json.has("arguments") ? json.getJSONArray("arguments").toString() : "";
-		Robot robot = services.getRegistry().getRobot(facility, robotName);
+		Robot robot = services.getService(Registry.class).getRobot(facility, robotName);
 		if (robot == null) {
 			// Not registered
 			System.out.println("ERROR, NO ROBOT");
 		} else {
 			RobotQueryService handler = robot.getHandler();
 			if (handler == null || handler.hasBeenUsed(request)) {
-				FirebaseService fb = services.getFireBase();
+				FirebaseService fb = services.getService(FirebaseService.class);
 				if (fb != null) {
 					System.out.println("Firebase");
 					if (fb.sendMessage(json.toString(), robot.getToken())) {

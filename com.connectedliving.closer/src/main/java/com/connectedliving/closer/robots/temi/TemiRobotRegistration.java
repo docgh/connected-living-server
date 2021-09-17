@@ -43,7 +43,7 @@ public class TemiRobotRegistration {
 			System.out.println(jsonData.toString());
 		}
 		Robot robot = new TemiRobot(facility, name, token, jsonData);
-		Registry registry = Services.getInstance().getRegistry();
+		Registry registry = Services.getInstance().getService(Registry.class);
 		registry.addRobot(robot);
 		response.setContentType("application/json");
 		response.setStatus(HttpServletResponse.SC_OK);

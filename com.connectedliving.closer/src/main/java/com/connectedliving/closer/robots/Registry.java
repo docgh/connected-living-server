@@ -3,14 +3,17 @@ package com.connectedliving.closer.robots;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.connectedliving.closer.Services;
+import com.connectedliving.closer.storage.RobotStorageService;
+
 public class Registry {
 
 	////////// Temporary. Should be database implementation
 
-	Map<String, Robot> robots;
+	Map<String, Robot> robotsCache;
 
 	public Registry() {
-		robots = new HashMap<String, Robot>();
+		robotsCache = new HashMap<String, Robot>();
 	}
 
 	private String createIndexId(Robot robot) {
@@ -23,19 +26,28 @@ public class Registry {
 
 	public void addRobot(Robot robot) {
 		String index = createIndexId(robot);
-		robots.put(index, robot);
+		robotsCache.put(index, robot);
+		Services.getInstance().getService(RobotStorageService.class).storeRegistration(robot);
 	}
 
 	public Robot getRobot(String facility, String name) {
 		String index = createIndex(facility, name);
-		return robots.get(index);
+		Robot robot = robotsCache.get(index);
+		if (robot != null) {
+			return robot;
+		}
+		robot = Services.getInstance().getService(RobotStorageService.class).getRobot(facility, name);
+		if (robot != null) {
+			robotsCache.put(index, robot);
+		}
+		return robot;
 	}
 
 	public String getToken(String facility, String name) {
-		String index = createIndex(facility, name);
-		if (robots.containsKey(index)) {
-			return robots.get(index).getToken();
+		Robot robot = getRobot(facility, name);
+		if (robot == null) {
+			return null;
 		}
-		return null;
+		return robot.getToken();
 	}
 }

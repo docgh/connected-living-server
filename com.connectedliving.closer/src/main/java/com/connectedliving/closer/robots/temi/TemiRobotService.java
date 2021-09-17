@@ -5,6 +5,7 @@ import java.io.IOException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.connectedliving.closer.robots.Robot;
 import com.connectedliving.closer.robots.RobotService;
 
 public class TemiRobotService implements RobotService {
@@ -98,6 +99,16 @@ public class TemiRobotService implements RobotService {
 			e.printStackTrace();
 		}
 
+	}
+
+	@Override
+	public boolean handlesRobotType(int robotType) {
+		return robotType == TemiRobot.ROBOT_TYPE;
+	}
+
+	@Override
+	public Robot createRobot(String facility, String name, String token, Long time, String data) {
+		return new TemiRobot(facility, name, token, data);
 	}
 
 }

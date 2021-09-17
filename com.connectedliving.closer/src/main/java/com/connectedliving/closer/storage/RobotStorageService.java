@@ -2,11 +2,11 @@ package com.connectedliving.closer.storage;
 
 import com.connectedliving.closer.robots.Robot;
 
-public interface StorageService {
+public interface RobotStorageService {
 
 	boolean storeRegistration(Robot robot);
 
-	boolean getRobot(String facility, String id);
+	Robot getRobot(String facility, String id);
 
 	boolean deleteRobot(Robot robot);
 

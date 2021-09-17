@@ -2,11 +2,15 @@ package com.connectedliving.closer;
 
 import org.apache.log4j.BasicConfigurator;
 
+import com.connectedliving.closer.configuration.CLConfig;
 import com.connectedliving.closer.network.CLServer;
 import com.connectedliving.closer.network.firebase.FirebaseService;
 import com.connectedliving.closer.robots.Registry;
-import com.connectedliving.closer.robots.Robot;
 import com.connectedliving.closer.robots.temi.TemiRobotService;
+import com.connectedliving.closer.storage.DatabaseService;
+import com.connectedliving.closer.storage.RobotStorageService;
+import com.connectedliving.closer.storage.impl.DatabaseServiceImpl;
+import com.connectedliving.closer.storage.impl.RobotStorageServiceImpl;
 
 public class Startup {
 
@@ -15,15 +19,24 @@ public class Startup {
 	public static void main(String[] args) {
 		try {
 			BasicConfigurator.configure();
+			// Init servicees
 			Services services = Services.getInstance();
-			services.setRegistry(new Registry());
+			// Add configuration
+			CLConfig config = new CLConfig();
+			services.add(CLConfig.class, config);
+			// Add Robot registry
+			Registry registry = new Registry();
+			services.add(Registry.class, registry);
+			// Register Robot Service
 			services.registerRobotService(new TemiRobotService());
-			services.setFirebaseService(new FirebaseService());
+			services.add(RobotStorageService.class, new RobotStorageServiceImpl(services));
+			// Register Firebase
+			services.add(FirebaseService.class, new FirebaseService());
+			// Register Database
+			DatabaseService dbService = new DatabaseServiceImpl(config);
+			services.add(DatabaseService.class, dbService);
 			new CLServer().start();
 
-			// For testing
-			Robot testRobot = new Robot("greg's home", "docgreg temi", testToken);
-			Services.getInstance().getRegistry().addRobot(testRobot);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

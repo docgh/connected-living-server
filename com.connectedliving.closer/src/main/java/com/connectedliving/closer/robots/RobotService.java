@@ -29,4 +29,8 @@ public interface RobotService {
 
 	public void handleStatus(HttpServletRequest request, HttpServletResponse response);
 
+	public boolean handlesRobotType(int robotType);
+
+	public Robot createRobot(String facility, String name, String token, Long time, String data);
+
 }
