@@ -2,7 +2,6 @@ package com.connectedliving.closer.robots.temi;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Date;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -12,6 +11,8 @@ import org.eclipse.jetty.server.Request;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.connectedliving.closer.Services;
 import com.connectedliving.closer.robots.Registry;
@@ -20,6 +21,7 @@ import com.connectedliving.closer.robots.RobotQueryService;
 
 public class TemiRobotQueryService extends RobotQueryService {
 
+	private static final Logger LOG = LoggerFactory.getLogger(TemiRobotQueryService.class);
 	HttpSession session = null;
 
 	public TemiRobotQueryService() {
@@ -34,7 +36,7 @@ public class TemiRobotQueryService extends RobotQueryService {
 			try {
 				json.put("arguments", new JSONArray(arguments));
 			} catch (JSONException ex) {
-				System.out.println(arguments);
+				LOG.error("Error parsing command arguments", ex);
 			}
 		}
 		return json;
@@ -48,10 +50,9 @@ public class TemiRobotQueryService extends RobotQueryService {
 	}
 
 	public void handleQuery(HttpServletRequest request, HttpServletResponse response) throws Exception {
-		System.out.print(new Date().toLocaleString() + ": ");
-		System.out.println("Recieved query");
+		LOG.debug("Recieved query");
 		if (request.getHeader("Cookie") != null) {
-			System.out.println(request.getHeader("Cookie"));
+			LOG.debug("Cookie: " + request.getHeader("Cookie"));
 		}
 		session = request.getSession(true);
 		String robotName = request.getParameter("robot");

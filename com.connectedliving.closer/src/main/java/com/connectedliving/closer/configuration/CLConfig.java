@@ -5,7 +5,12 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Properties;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class CLConfig {
+
+	private static final Logger LOG = LoggerFactory.getLogger(CLConfig.class);
 
 	Properties prop;
 
@@ -19,10 +24,10 @@ public class CLConfig {
 		try (FileInputStream fis = new FileInputStream(fileLocation)) {
 			prop.load(fis);
 		} catch (FileNotFoundException ex) {
-			System.out.println("Configuration not found");
+			LOG.error("Configuration not found", ex);
 			throw new RuntimeException("Config not found", ex);
 		} catch (IOException ex) {
-			System.out.println("Configuration error");
+			LOG.error("Configuration error", ex);
 			throw new RuntimeException("Config error", ex);
 		}
 	}

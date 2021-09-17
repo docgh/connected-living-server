@@ -7,6 +7,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.connectedliving.closer.Services;
 import com.connectedliving.closer.robots.Registry;
@@ -14,6 +16,7 @@ import com.connectedliving.closer.robots.Robot;
 
 public class TemiRobotRegistration {
 
+	private static final Logger LOG = LoggerFactory.getLogger(TemiRobotRegistration.class);
 	private static String SERVERID = "TEST_SERVER";
 
 	private JSONObject getJSON() {
@@ -25,13 +28,13 @@ public class TemiRobotRegistration {
 	public void doRegister(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		String token = request.getParameter("token");
 		if (token != null) {
-			System.out.println("Received startup: " + token);
+			LOG.info("Received startup: " + token);
 		}
 		request.getSession(true);
 		String facility = request.getParameter("facility");
 		String name = request.getParameter("robot");
-		System.out.println("Facility: " + facility);
-		System.out.println("Robot:" + name);
+		LOG.debug("Facility: " + facility);
+		LOG.debug("Robot:" + name);
 		if (token == null || facility == null || name == null) {
 			// throw bad registration
 		}
@@ -40,7 +43,7 @@ public class TemiRobotRegistration {
 		JSONObject jsonData = null;
 		if (json != null) {
 			jsonData = new JSONObject(json);
-			System.out.println(jsonData.toString());
+			LOG.debug(jsonData.toString());
 		}
 		Robot robot = new TemiRobot(facility, name, token, jsonData);
 		Registry registry = Services.getInstance().getService(Registry.class);

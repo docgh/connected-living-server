@@ -2,6 +2,9 @@ package com.connectedliving.closer.network.firebase;
 
 import java.io.IOException;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
@@ -10,6 +13,8 @@ import com.google.firebase.messaging.FirebaseMessagingException;
 import com.google.firebase.messaging.Message;
 
 public class FirebaseService {
+
+	private static final Logger LOG = LoggerFactory.getLogger(FirebaseService.class);
 
 	/**
 	 * Initializes Firebase Expects credentials to be in
@@ -34,12 +39,11 @@ public class FirebaseService {
 		try {
 			response = FirebaseMessaging.getInstance().send(message);
 		} catch (FirebaseMessagingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			LOG.error("Problem sending firebase message", e);
 			return false;
 		}
 		// Response is a message ID string.
-		System.out.println("Successfully sent message: " + response);
+		LOG.info("Successfully sent message: " + response);
 		return true;
 
 	}

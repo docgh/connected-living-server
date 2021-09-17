@@ -7,9 +7,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class TemiStatusService {
 
+	private static final Logger LOG = LoggerFactory.getLogger(TemiStatusService.class);
 	TemiRobotStatusCache cache;
 
 	public TemiStatusService(TemiRobotStatusCache cache) {
@@ -19,7 +22,7 @@ public class TemiStatusService {
 	public void handle(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		String token = request.getParameter("token");
 		if (token != null) {
-			System.out.println("Received status");
+			LOG.info("Received status");
 		}
 		String facility = request.getParameter("facility");
 		String name = request.getParameter("robot");
@@ -31,7 +34,7 @@ public class TemiStatusService {
 		JSONObject jsonData = null;
 		if (json != null) {
 			jsonData = new JSONObject(json);
-			System.out.println(jsonData.toString());
+			LOG.debug(jsonData.toString());
 		}
 		cache.addStatus(facility, name, jsonData);
 	}

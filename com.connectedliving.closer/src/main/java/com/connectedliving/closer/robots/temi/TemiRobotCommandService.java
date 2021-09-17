@@ -8,6 +8,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.connectedliving.closer.Services;
 import com.connectedliving.closer.network.firebase.FirebaseService;
@@ -17,6 +19,7 @@ import com.connectedliving.closer.robots.RobotQueryService;
 
 public class TemiRobotCommandService {
 
+	private static final Logger LOG = LoggerFactory.getLogger(TemiRobotCommandService.class);
 	private static final int statusTimeout = 10000;
 	TemiRobotStatusCache cache;
 
@@ -25,7 +28,7 @@ public class TemiRobotCommandService {
 	}
 
 	public void handle(HttpServletRequest request, HttpServletResponse response) {
-		System.out.println("Command received");
+		LOG.info("Command received");
 
 		try {
 			String data = request.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
@@ -39,8 +42,7 @@ public class TemiRobotCommandService {
 				}
 			}
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			LOG.error("Error processing command", e);
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -60,7 +62,6 @@ public class TemiRobotCommandService {
 			while (count++ < 4 && status == null) {
 				status = cache.getStatus(facility, robotName);
 				if (status == null) {
-					System.out.println("Waiting");
 					Thread.sleep(500);
 				}
 			}
@@ -86,13 +87,13 @@ public class TemiRobotCommandService {
 		Robot robot = services.getService(Registry.class).getRobot(facility, robotName);
 		if (robot == null) {
 			// Not registered
-			System.out.println("ERROR, NO ROBOT");
+			LOG.error("No ROBOT FOUND");
 		} else {
 			RobotQueryService handler = robot.getHandler();
 			if (handler == null || handler.hasBeenUsed(request)) {
 				FirebaseService fb = services.getService(FirebaseService.class);
 				if (fb != null) {
-					System.out.println("Firebase");
+					LOG.info("Sending firebase message");
 					if (fb.sendMessage(json.toString(), robot.getToken())) {
 
 					} else {

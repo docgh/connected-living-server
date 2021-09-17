@@ -1,6 +1,8 @@
 package com.connectedliving.closer;
 
 import org.apache.log4j.BasicConfigurator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.connectedliving.closer.configuration.CLConfig;
 import com.connectedliving.closer.network.CLServer;
@@ -15,6 +17,8 @@ import com.connectedliving.closer.storage.impl.RobotStorageServiceImpl;
 public class Startup {
 
 	static final String testToken = "cnS1eKDITNCiol4vxlQdXS:APA91bE9BgxHrdoCJLHTCQXn9AWJ9--U2Z29xg86Ck637W68nAsVwK60jObI2vK-g4LBYr-IkqOe0yLi-NHRIZnMhiJekXm5zmcFEyC0MqkAUFWqSuH4nza13RPmPGZ2wJY_xXZfOWSO";
+
+	static final Logger LOG = LoggerFactory.getLogger(Startup.class);
 
 	public static void main(String[] args) {
 		try {
@@ -36,6 +40,8 @@ public class Startup {
 			DatabaseService dbService = new DatabaseServiceImpl(config);
 			services.add(DatabaseService.class, dbService);
 			new CLServer().start();
+
+			LOG.info("Service started");
 
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
