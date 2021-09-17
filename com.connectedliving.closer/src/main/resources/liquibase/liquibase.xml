@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog  
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"  
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"  
+    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"  
+    xmlns:pro="http://www.liquibase.org/xml/ns/pro"  
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.1.xsd
+    http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd
+    http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-4.1.xsd ">  
+
+<changeSet id="init:robot:table" author="Greg Hill">
+	<preConditions onFail="MARK_RAN">
+		<not>
+			<tableExists tableName="robots" />
+		</not>
+	</preConditions>
+	<comment>
+        Add table 'robot'.
+    </comment>
+	<sql>
+		CREATE TABLE `robots` (
+		`Facility` varchar(100) NOT NULL,
+		`Name` varchar(100) NOT NULL,
+		`Token` varchar(255) NOT NULL,
+		`Registration` bigint(20) DEFAULT NULL,
+		`Type` int(11) DEFAULT NULL,
+		`Data` text,
+		PRIMARY KEY (`Facility`,`Name`)
+		) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+	</sql>
+	<rollback>
+		<dropTable tableName="robots" />
+	</rollback>
+</changeSet>
+</databaseChangeLog>

@@ -27,4 +27,6 @@ public interface DatabaseService {
 
 	public void closeAll(ResultSet rs, PreparedStatement stmt, Connection con);
 
+	public void updateDatabase();
+
 }

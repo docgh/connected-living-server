@@ -39,6 +39,9 @@ public class Startup {
 			// Register Database
 			DatabaseService dbService = new DatabaseServiceImpl(config);
 			services.add(DatabaseService.class, dbService);
+
+			dbService.updateDatabase();
+
 			new CLServer().start();
 
 			LOG.info("Service started");

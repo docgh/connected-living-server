@@ -1,5 +1,6 @@
 package com.connectedliving.closer.storage.impl;
 
+import java.io.File;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -7,9 +8,19 @@ import java.sql.SQLException;
 
 import org.apache.commons.dbcp2.BasicDataSource;
 
+import com.connectedliving.closer.Services;
 import com.connectedliving.closer.configuration.CLConfig;
 import com.connectedliving.closer.configuration.CLConfigProperty;
 import com.connectedliving.closer.storage.DatabaseService;
+
+import liquibase.Contexts;
+import liquibase.LabelExpression;
+import liquibase.Liquibase;
+import liquibase.database.Database;
+import liquibase.database.DatabaseFactory;
+import liquibase.database.jvm.JdbcConnection;
+import liquibase.exception.LiquibaseException;
+import liquibase.resource.FileSystemResourceAccessor;
 
 public class DatabaseServiceImpl implements DatabaseService {
 
@@ -119,6 +130,29 @@ public class DatabaseServiceImpl implements DatabaseService {
 			}
 		}
 		closeAll(stmt, con);
+
+	}
+
+	@Override
+	public void updateDatabase() {
+
+		try {
+			CLConfig config = Services.getInstance().getService(CLConfig.class);
+			Connection connection = getWriteableCon();
+			String path = new File(".").getAbsolutePath();
+			System.out.println(path);
+			Database database = DatabaseFactory.getInstance()
+					.findCorrectDatabaseImplementation(new JdbcConnection(connection));
+			Liquibase liquibase = new liquibase.Liquibase("liquibase.xml",
+					new FileSystemResourceAccessor(new File(config.getProperty(CLConfigProperty.LIQUIBASE_LOC))),
+					database);
+			liquibase.update(new Contexts(), new LabelExpression());
+			connection.close();
+		} catch (LiquibaseException | SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			throw new RuntimeException("Unable to update database");
+		}
 
 	}
 
