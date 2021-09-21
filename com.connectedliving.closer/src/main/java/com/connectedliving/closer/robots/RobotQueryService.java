@@ -3,7 +3,7 @@ package com.connectedliving.closer.robots;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import javax.servlet.http.HttpServletRequest;
+import com.connectedliving.closer.network.CLRequest;
 
 public abstract class RobotQueryService {
 
@@ -27,7 +27,7 @@ public abstract class RobotQueryService {
 	 * 
 	 * @return
 	 */
-	public boolean hasBeenUsed(HttpServletRequest request) {
+	public boolean hasBeenUsed(CLRequest request) {
 		return used;
 	}
 

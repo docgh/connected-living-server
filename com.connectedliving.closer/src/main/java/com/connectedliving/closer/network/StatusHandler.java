@@ -9,9 +9,14 @@ import javax.servlet.http.HttpServletResponse;
 import com.connectedliving.closer.Services;
 import com.connectedliving.closer.robots.RobotService;
 
-public class StatusHandler extends CLAuthenticatedHandler {
+public class StatusHandler extends AbstractHandler {
 
-	protected void doPut(HttpServletRequest request, HttpServletResponse response) throws IOException {
+	StatusHandler(Services services) {
+		super(services);
+	}
+
+	@Override
+	public void doPut(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		List<RobotService> services = Services.getInstance().getRobotServices();
 		for (RobotService service : services) {
 			if (service.handlesStatus(request)) {

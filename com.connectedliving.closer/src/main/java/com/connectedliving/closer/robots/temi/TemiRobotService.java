@@ -5,6 +5,9 @@ import java.io.IOException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.connectedliving.closer.authentication.User;
+import com.connectedliving.closer.exceptions.CLException;
+import com.connectedliving.closer.network.CLRequest;
 import com.connectedliving.closer.robots.Robot;
 import com.connectedliving.closer.robots.RobotService;
 
@@ -26,7 +29,7 @@ public class TemiRobotService implements RobotService {
 		return true;
 	}
 
-	public boolean handlesCommand(HttpServletRequest request) {
+	public boolean handlesCommand(CLRequest request) {
 		return true;
 	}
 
@@ -34,7 +37,7 @@ public class TemiRobotService implements RobotService {
 		return true;
 	}
 
-	public boolean handlesPictureQuery(HttpServletRequest request) {
+	public boolean handlesPictureQuery(CLRequest request) {
 		return true;
 	}
 
@@ -63,9 +66,9 @@ public class TemiRobotService implements RobotService {
 		}
 	}
 
-	public void handleCommand(HttpServletRequest request, HttpServletResponse response) {
+	public void handleCommand(User user, CLRequest request, HttpServletResponse response) throws CLException {
 		TemiRobotCommandService command = new TemiRobotCommandService(statusCache);
-		command.handle(request, response);
+		command.handle(user, request, response);
 
 	}
 
@@ -79,7 +82,7 @@ public class TemiRobotService implements RobotService {
 
 	}
 
-	public void handlePictureQuery(HttpServletRequest request, HttpServletResponse response) {
+	public void handlePictureQuery(CLRequest request, HttpServletResponse response) {
 		TemiRobotImageService imageService = new TemiRobotImageService(imageCache);
 		try {
 			imageService.handle(request, response);

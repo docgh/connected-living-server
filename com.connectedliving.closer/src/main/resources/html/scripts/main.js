@@ -1,6 +1,8 @@
 
 var facility = "greg's home";
 
+var sessionId;
+
 function sendRequest(command, ...args) {
     const data = {
         command: command,
@@ -10,7 +12,7 @@ function sendRequest(command, ...args) {
         facility: facility
     };
     return $.ajax({
-        url: 'http://localhost:8080/command',
+        url: 'http://localhost:8080/command?sessionId=' + encodeURI(sessionId),
         type: 'PUT',
         data: JSON.stringify(data),
         success: function (result) {
@@ -84,6 +86,33 @@ function goto() {
 function picture() {
 	sendRequest('camera_picture');
 	$('#pictureDiv').empty();
-	var url = 'http://localhost:8080/picture?facility=' + facility + '&robot=' + $('#robot').val();
+	var url = 'http://localhost:8080/picture?facility=' + facility + '&robot=' + $('#robot').val() + '&sessionId=' + encodeURI(sessionId);
 	$('#pictureDiv').append($('<img>').attr('src', encodeURI(url)));
 }
+
+function login() {
+	var auth = {
+		username: $('#username').val(),
+		password: $('#password').val()
+	}
+	$.ajax({
+        url: 'http://localhost:8080/auth',
+        type: 'POST',
+        data: JSON.stringify(auth),
+        success: function (result) {
+            console.log('login');
+            if (result.sessionId) {
+            	sessionId = result.sessionId;
+            	$('#authDiv').hide();
+            	$('#mainDiv').show();
+            	return;
+            }
+            alert('Login failed');
+        },
+        fail: function (result) {
+            console.log('fail');
+        }
+    });
+ }
+ 
+	

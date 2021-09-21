@@ -1,129 +1,123 @@
 <head>
-    <link rel="stylesheet" href="./fa/fontawesome-free-5.15.4-web/css/all.css">
-    <link rel="stylesheet" href="./css/style.css">
-    <script src="scripts/main.js"></script>
-    <script src="scripts/jquery-min.js"></script>
+<link rel="stylesheet"
+	href="./fa/fontawesome-free-5.15.4-web/css/all.css">
+<link rel="stylesheet" href="./css/style.css">
+<script src="scripts/main.js"></script>
+<script src="scripts/jquery-min.js"></script>
 
 </head>
 <body>
-    <div class="header">
-        <img src="./images/CLRobotics.png" style="width:260px;">
-    </div>
-    <div class="camera">
-        <label >Camera</label>
-        <table class="camtable">
-            <tr>
-            	<td>
-                </td>
-                <td>
-                </td>
-                <td>
-                    <a href="#" onclick="up()">
-                     <i class="fa fa-angle-up fa-2x"></i>
-                    </a>
-                </td>
-                <td>
-                </td>
-                <td>
-                </td>
-            </tr>
-            <tr>
-            	<td>
-            	<a href="#" onclick="left(10)">
-                        <i class="fa fa-angle-double-left fa-2x"></i>
-                    </a>
-                </td>
-                <td>
-                    <a href="#" onclick="left(5)">
-                        <i class="fa fa-angle-left fa-2x"></i>
-                    </a>
-                    
-                </td>
-                <td>
-                </td>
-                <td>
-                	<a href="#" onclick="right(5)">
-                        <i class="fa fa-angle-right fa-2x"></i>
-                    </a>
-                <td>
-                    <a href="#" onclick="right(10)">
-                        <i class="fa fa-angle-double-right fa-2x"></i>
-                    </a>   
-                </td>
-            </tr>
-            <tr>
-            	<td>
-                </td>
-                <td>
-                </td>
-                <td>
-                    <a href="#" onclick="down()">
-                        <i class="fa fa-chevron-down fa-2x"></i>
-                    </a>
-                    
-                </td>
-                <td>
-                </td>
-                <td>
-                </td>
-            </tr>
-        </table>
-    </div>
-    <div class="movement"> 
-    	<label >Nav</label>
-		<table class="navtable">
-			<tr>
-				<td></td>
-				<td><a href="#" onclick="forward()"> <i
-						class="fa fa-angle-up fa-2x"></i>
-				</a></td>
-				<td></td>
-			</tr>
-			<tr>
-				<td><a href="#" onclick="rotateLeft()"> <i
-						class="fa fa-angle-double-left fa-2x"></i>
-				</a></td>
-				<td><a href="#" onclick="stop()"> <i
-						class="fa fa-stop fa-2x"></i>
-				</a></td>
-				<td><a href="#" onclick="rotateRight()"> <i
-						class="fa fa-angle-double-right fa-2x"></i>
-				</a></td>
-			</tr>
-
-			<tr>
-				<td></td>
-				<td><a href="#" onclick="back()"> <i
-						class="fa fa-angle-down fa-2x"></i>
-				</a></td>
-				<td></td>
-			</tr>
-		</table>
+	<div class="header">
+		<img src="./images/CLRobotics.png" style="width: 260px;">
 	</div>
-    <div class="robotSelector">
-        <label for="robot">Select robot for facility "Test"</label>
-        <select name="robot" id="robot" onchange="changeSelection()">
-        	<option value="0">Select</option>
-            <option value="docgreg temi">Robot 1</option>
-            <option value="2">Robot 2</option>
-            <option value="3">Robot 3</option>
-          </select>
-    </div>
-    <div class="locationSelector">
-        <label for="locations">Locations: </label>
-    	<select name="locations" id="locations" onchange="changeLocation()">
-    	</select>
-    	<button id="gotoButton" onclick="goto()">go</button>
-    </div>
-    <div class="BatteryDiv">
-        <label for="battery">Battery: </label>
-    	<progress id="battery" max="100"></progress>
-    </div>
-    <div>
-    <button id="pictureButton" class="picbutton" onclick="picture()">Picture</button>
-    <br>
-    <div id="pictureDiv">
-    </div>
-    
-    </div>
+	<div class="authDiv" id="authDiv">
+		<div class="usernameDiv">
+		<label for="username">Username: </label>
+		<input id="username" type="text">
+		</div>
+		<br>
+		<div class="passwordDiv">
+		<label for="password">Password: </lable>
+		<input id="password" type="password">
+		</div>
+		<br>
+		<button id="loginButton" onclick="login()">Login</button>
+	</div>
+	<div class="mainDiv" id="mainDiv">
+		<div class="camera">
+			<label>Camera</label>
+			<table class="camtable">
+				<tr>
+					<td></td>
+					<td></td>
+					<td><a href="#" onclick="up()"> <i
+							class="fa fa-angle-up fa-2x"></i>
+					</a></td>
+					<td></td>
+					<td></td>
+				</tr>
+				<tr>
+					<td><a href="#" onclick="left(10)"> <i
+							class="fa fa-angle-double-left fa-2x"></i>
+					</a></td>
+					<td><a href="#" onclick="left(5)"> <i
+							class="fa fa-angle-left fa-2x"></i>
+					</a></td>
+					<td></td>
+					<td><a href="#" onclick="right(5)"> <i
+							class="fa fa-angle-right fa-2x"></i>
+					</a>
+					<td><a href="#" onclick="right(10)"> <i
+							class="fa fa-angle-double-right fa-2x"></i>
+					</a></td>
+				</tr>
+				<tr>
+					<td></td>
+					<td></td>
+					<td><a href="#" onclick="down()"> <i
+							class="fa fa-chevron-down fa-2x"></i>
+					</a></td>
+					<td></td>
+					<td></td>
+				</tr>
+			</table>
+		</div>
+		<div class="movement">
+			<label>Nav</label>
+			<table class="navtable">
+				<tr>
+					<td></td>
+					<td><a href="#" onclick="forward()"> <i
+							class="fa fa-angle-up fa-2x"></i>
+					</a></td>
+					<td></td>
+				</tr>
+				<tr>
+					<td><a href="#" onclick="rotateLeft()"> <i
+							class="fa fa-angle-double-left fa-2x"></i>
+					</a></td>
+					<td><a href="#" onclick="stop()"> <i
+							class="fa fa-stop fa-2x"></i>
+					</a></td>
+					<td><a href="#" onclick="rotateRight()"> <i
+							class="fa fa-angle-double-right fa-2x"></i>
+					</a></td>
+				</tr>
+
+				<tr>
+					<td></td>
+					<td><a href="#" onclick="back()"> <i
+							class="fa fa-angle-down fa-2x"></i>
+					</a></td>
+					<td></td>
+				</tr>
+			</table>
+		</div>
+		<div class="robotSelector">
+			<label for="robot">Select robot for facility "Test"</label> <select
+				name="robot" id="robot" onchange="changeSelection()">
+				<option value="0">Select</option>
+				<option value="docgreg temi">Robot 1</option>
+				<option value="2">Robot 2</option>
+				<option value="3">Robot 3</option>
+			</select>
+		</div>
+		<div class="locationSelector">
+			<label for="locations">Locations: </label> <select name="locations"
+				id="locations" onchange="changeLocation()">
+			</select>
+			<button id="gotoButton" onclick="goto()">go</button>
+		</div>
+		<div class="BatteryDiv">
+			<label for="battery">Battery: </label>
+			<progress id="battery" max="100"></progress>
+		</div>
+		<div>
+			<button id="pictureButton" class="picbutton" onclick="picture()">Picture</button>
+			<br>
+			<div id="pictureDiv"></div>
+
+		</div>
+	</div>
+
 </body>

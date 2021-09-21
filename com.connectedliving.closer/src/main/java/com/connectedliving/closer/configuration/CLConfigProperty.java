@@ -7,7 +7,10 @@ public enum CLConfigProperty {
 	DATABASE_WRITE_URL("databaseWriteUrl"), DATABASE_READ_URL("databaseReadUrl"), DATABASE_USER("databaseUser"),
 	DATABASE_PASSWORD("databasePassword"),
 
-	MAX_DATABASE_CONNECTIONS("maxConnections", 10),;
+	MAX_DATABASE_CONNECTIONS("maxConnections", 10),
+
+	SESSION_IDLE_LIMIT("sessionIdleLimit", 30), // Session idle time limit in minutes
+	;
 
 	private String value;
 	private Object defaultVal;

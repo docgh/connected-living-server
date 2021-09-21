@@ -32,4 +32,27 @@
 		<dropTable tableName="robots" />
 	</rollback>
 </changeSet>
+<changeSet id="init:users:table" author="Greg Hill">
+	<preConditions onFail="MARK_RAN">
+		<not>
+			<tableExists tableName="users" />
+		</not>
+	</preConditions>
+	<comment>
+        Add table 'user'.
+    </comment>
+	<sql>
+		CREATE TABLE `users` (
+		  `guid` varchar(40) NOT NULL,
+		  `username` varchar(40) NOT NULL,
+		  `password` varchar(255) DEFAULT NULL,
+		  `permissions` text DEFAULT NULL,
+		  PRIMARY KEY (`guid`,`username`)
+		) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+		SET FOREIGN_KEY_CHECKS=1;
+	</sql>
+	<rollback>
+		<dropTable tableName="users" />
+	</rollback>
+</changeSet>
 </databaseChangeLog>

@@ -4,6 +4,7 @@ import org.apache.log4j.BasicConfigurator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.connectedliving.closer.authentication.SessionCache;
 import com.connectedliving.closer.configuration.CLConfig;
 import com.connectedliving.closer.network.CLServer;
 import com.connectedliving.closer.network.firebase.FirebaseService;
@@ -11,8 +12,10 @@ import com.connectedliving.closer.robots.Registry;
 import com.connectedliving.closer.robots.temi.TemiRobotService;
 import com.connectedliving.closer.storage.DatabaseService;
 import com.connectedliving.closer.storage.RobotStorageService;
+import com.connectedliving.closer.storage.UserStorageService;
 import com.connectedliving.closer.storage.impl.DatabaseServiceImpl;
 import com.connectedliving.closer.storage.impl.RobotStorageServiceImpl;
+import com.connectedliving.closer.storage.impl.UserStorageServiceImpl;
 
 public class Startup {
 
@@ -39,10 +42,12 @@ public class Startup {
 			// Register Database
 			DatabaseService dbService = new DatabaseServiceImpl(config);
 			services.add(DatabaseService.class, dbService);
-
+			services.add(UserStorageService.class, new UserStorageServiceImpl(services));
 			dbService.updateDatabase();
 
-			new CLServer().start();
+			services.add(SessionCache.class, new SessionCache());
+
+			new CLServer(services).start();
 
 			LOG.info("Service started");
 

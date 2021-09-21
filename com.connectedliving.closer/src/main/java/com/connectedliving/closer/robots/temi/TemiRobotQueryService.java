@@ -15,6 +15,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.connectedliving.closer.Services;
+import com.connectedliving.closer.network.CLRequest;
 import com.connectedliving.closer.robots.Registry;
 import com.connectedliving.closer.robots.Robot;
 import com.connectedliving.closer.robots.RobotQueryService;
@@ -43,8 +44,8 @@ public class TemiRobotQueryService extends RobotQueryService {
 	}
 
 	@Override
-	public boolean hasBeenUsed(HttpServletRequest request) {
-		if (((Request) request).getSessionHandler().getSession(session.getId()) == null)
+	public boolean hasBeenUsed(CLRequest request) {
+		if (((Request) request.getDelegate()).getSessionHandler().getSession(session.getId()) == null)
 			return false;
 		return used;
 	}

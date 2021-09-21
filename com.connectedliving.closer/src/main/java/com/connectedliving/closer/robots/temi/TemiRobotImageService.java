@@ -3,9 +3,9 @@ package com.connectedliving.closer.robots.temi;
 import java.io.ByteArrayInputStream;
 import java.io.OutputStream;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.connectedliving.closer.network.CLRequest;
 import com.connectedliving.closer.robots.temi.TemiRobotImageCache.Image;
 import com.google.api.client.util.IOUtils;
 
@@ -36,7 +36,7 @@ public class TemiRobotImageService {
 		return image;
 	}
 
-	public void handle(HttpServletRequest request, HttpServletResponse response) throws Exception {
+	public void handle(CLRequest request, HttpServletResponse response) throws Exception {
 		String facility = request.getParameter("facility");
 		String robot = request.getParameter("robot");
 		if (facility == null || robot == null) {

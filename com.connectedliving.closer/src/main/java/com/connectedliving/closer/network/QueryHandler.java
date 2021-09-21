@@ -8,9 +8,14 @@ import javax.servlet.http.HttpServletResponse;
 import com.connectedliving.closer.Services;
 import com.connectedliving.closer.robots.RobotService;
 
-public class QueryHandler extends CLAuthenticatedHandler {
+public class QueryHandler extends AbstractHandler {
 
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) {
+	QueryHandler(Services services) {
+		super(services);
+	}
+
+	@Override
+	public void do_doGet(HttpServletRequest request, HttpServletResponse response) {
 		if (isRobotAuthenticated(request, response)) {
 			List<RobotService> services = Services.getInstance().getRobotServices();
 			for (RobotService service : services) {

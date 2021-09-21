@@ -15,9 +15,17 @@ import org.eclipse.jetty.servlet.ServletHolder;
 import org.eclipse.jetty.util.log.Log;
 import org.eclipse.jetty.util.log.StdErrLog;
 
+import com.connectedliving.closer.Services;
+
 public class CLServer {
 
 	private Server server;
+
+	Services services;
+
+	public CLServer(Services services) {
+		this.services = services;
+	}
 
 	public void start() throws Exception {
 		StdErrLog logger = new StdErrLog();
@@ -38,21 +46,24 @@ public class CLServer {
 		manager.setHttpOnly(true);
 		root.setSessionHandler(manager);
 
-		ServletHolder registerServlet = new ServletHolder(new RegistryHandler());
+		ServletHolder registerServlet = new ServletHolder(new RegistryHandler(services));
 		root.addServlet(registerServlet, "/register/*");
 
-		ServletHolder queryServlet = new ServletHolder(new QueryHandler());
+		ServletHolder queryServlet = new ServletHolder(new QueryHandler(services));
 		root.addServlet(queryServlet, "/query/*");
 
-		ServletHolder commandServlet = new ServletHolder(new CommandHandler());
+		ServletHolder commandServlet = new ServletHolder(new CommandHandler(services));
 		root.addServlet(commandServlet, "/command/*");
 
-		ServletHolder statusServlet = new ServletHolder(new StatusHandler());
+		ServletHolder statusServlet = new ServletHolder(new StatusHandler(services));
 		root.addServlet(statusServlet, "/status/*");
 
-		ServletHolder pictureServlet = new ServletHolder(new PictureHandler());
+		ServletHolder pictureServlet = new ServletHolder(new PictureHandler(services));
 		pictureServlet.getRegistration().setMultipartConfig(new MultipartConfigElement("./tmp"));
 		root.addServlet(pictureServlet, "/picture/*");
+
+		ServletHolder authServlet = new ServletHolder(new AuthHandler(services));
+		root.addServlet(authServlet, "/auth/*");
 
 		ResourceHandler webPages = new ResourceHandler();
 		webPages.setResourceBase("./src/main/resources/html");

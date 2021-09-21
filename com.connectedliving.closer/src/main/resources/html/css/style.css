@@ -1,3 +1,33 @@
+.mainDiv {
+	display: none;
+}
+
+.authDiv {
+	width: 300px;
+}
+
+.authDiv Button {
+	float: right;
+}
+
+.authDiv label {
+	width: 100px;
+	margin-right: 20px;
+}
+
+.authDiv input {
+	width: 100%;
+}
+
+.authDiv .usernameDiv {
+	margin: 20px;
+	margin-bottom: 0px;
+}
+
+.authDiv .passwordDiv {
+	margin: 20px;
+}
+
 .camtable td {
     width: 50px;
     height: 50px;
