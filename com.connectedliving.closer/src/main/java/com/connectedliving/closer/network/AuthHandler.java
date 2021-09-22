@@ -47,6 +47,7 @@ public class AuthHandler extends AbstractHandler {
 	private JSONObject createReturnJson(UserSession session) {
 		JSONObject json = new JSONObject();
 		json.put("sessionId", session.getSessionId());
+		json.put("robots", session.getUser().getPermissionJsonArray());
 		return json;
 	}
 

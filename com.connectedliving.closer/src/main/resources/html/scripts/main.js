@@ -2,6 +2,7 @@
 var facility = "greg's home";
 
 var sessionId;
+var robots;
 
 function sendRequest(command, ...args) {
     const data = {
@@ -39,9 +40,22 @@ function updateRobot() {
 	});
 }
 
-function changeSelection() {
+function changeRobot() {
  	updateRobot();
  }
+
+function changeFacility() {
+	$('#robot').empty();
+	if (robots) {
+		$('#robot').append($('<option val="0">Select</option>'));
+		robots.forEach(function(r) {
+			if (r.f == $('#facility').val()) {
+				var opt = $('<option>').val(r.n).append(r.n);
+            	$('#robot').append(opt);
+            }
+		})
+	}
+}
 
 function up() {
     sendRequest('camera_up', 10);
@@ -105,6 +119,13 @@ function login() {
             	sessionId = result.sessionId;
             	$('#authDiv').hide();
             	$('#mainDiv').show();
+            	if (result.robots) {
+            		robots = result.robots;
+            		result.robots.forEach(function (r) {
+            			var opt = $('<option>').val(r.f).append(r.f);
+            			$('#facility').append(opt);
+            		});
+            	}
             	return;
             }
             alert('Login failed');

@@ -52,12 +52,12 @@ public class User {
 	 * 
 	 * @return
 	 */
-	public String getPermissionJsonArray() {
+	public JSONArray getPermissionJsonArray() {
 		JSONArray perms = new JSONArray();
 		robots.forEach((r) -> {
 			perms.put(r.toJSON());
 		});
-		return perms.toString();
+		return perms;
 	}
 
 }

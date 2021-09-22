@@ -2,9 +2,13 @@ package com.connectedliving.closer.configuration;
 
 public enum CLConfigProperty {
 
+	SERVER_PORT("serverPort", 8080),
+
 	LIQUIBASE_LOC("liquibaseLocation"),
 
-	DATABASE_WRITE_URL("databaseWriteUrl"), DATABASE_READ_URL("databaseReadUrl"), DATABASE_USER("databaseUser"),
+	DATABASE_WRITE_URL("databaseWriteUrl"),
+	DATABASE_READ_URL("databaseReadUrl"),
+	DATABASE_USER("databaseUser"),
 	DATABASE_PASSWORD("databasePassword"),
 
 	MAX_DATABASE_CONNECTIONS("maxConnections", 10),

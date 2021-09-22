@@ -74,6 +74,16 @@
 
 .robotSelector {
     margin-left:10px;
+    width: 300px;
+}
+
+.robotSelector .optionDiv {
+	padding-bottom: 20px;
+}
+
+.robotSelector select {
+	width: 110px;
+	float: right;
 }
 
 .picbutton {

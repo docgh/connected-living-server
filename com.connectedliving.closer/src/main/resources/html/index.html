@@ -94,13 +94,18 @@
 			</table>
 		</div>
 		<div class="robotSelector">
-			<label for="robot">Select robot for facility "Test"</label> <select
-				name="robot" id="robot" onchange="changeSelection()">
+			<div class="optionDiv">
+			<label for="facility">Select facility</label>
+			<select name="facility" id="facility" onchange="changeFacility()">
 				<option value="0">Select</option>
-				<option value="docgreg temi">Robot 1</option>
-				<option value="2">Robot 2</option>
-				<option value="3">Robot 3</option>
 			</select>
+			</div>
+			<div class="optionDiv">
+			<label for="robot">Select robot for facility</label> 
+			<select	name="robot" id="robot" onchange="changeRobot()">
+				<option value="0">Select</option>
+			</select>
+			</div>
 		</div>
 		<div class="locationSelector">
 			<label for="locations">Locations: </label> <select name="locations"

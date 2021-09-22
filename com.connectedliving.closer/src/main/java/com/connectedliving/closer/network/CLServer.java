@@ -16,6 +16,8 @@ import org.eclipse.jetty.util.log.Log;
 import org.eclipse.jetty.util.log.StdErrLog;
 
 import com.connectedliving.closer.Services;
+import com.connectedliving.closer.configuration.CLConfig;
+import com.connectedliving.closer.configuration.CLConfigProperty;
 
 public class CLServer {
 
@@ -28,12 +30,13 @@ public class CLServer {
 	}
 
 	public void start() throws Exception {
+		CLConfig config = services.getService(CLConfig.class);
 		StdErrLog logger = new StdErrLog();
 		logger.setDebugEnabled(false);
 		Log.setLog(logger);
 		server = new Server();
 		ServerConnector connector = new ServerConnector(server);
-		connector.setPort(8080);
+		connector.setPort(config.getIntProperty(CLConfigProperty.SERVER_PORT));
 		server.setConnectors(new Connector[] { connector });
 
 		ServletContextHandler root = new ServletContextHandler(ServletContextHandler.SESSIONS);
